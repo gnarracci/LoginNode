@@ -1,4 +1,4 @@
-const express = express();
+const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
@@ -6,11 +6,12 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/signup', (req, res, next) => {
-
+    res.render('signup');
 });
 
 router.post('/signup', (req, res, next) => {
-    
+    console.log(req.body);
+    res.send('Recibido!!!');
 });
 
 router.get('/signin', (req, res, next) => {
