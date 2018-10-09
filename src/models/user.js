@@ -8,11 +8,11 @@ const userSchema = new Schema({
 });
 
 //Encriptacion de la Contraseña
-userSchema.methods.encrypPass = (password) => {
+userSchema.methods.encryptPassword = (password) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 };
 
-userSchema.methods.comparePass = (password) => {
+userSchema.methods.comparePassword = (password) => {
     return bcrypt.compareSync(password, this.password);
 };
 
