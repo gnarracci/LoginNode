@@ -1,1 +1,13 @@
+<%- layout('layouts/main.ejs') %>
+
 <h1>PERFIL DEL USUARIO LOGUEADO</h1>
+
+<div class="card card-body">
+    <h3>Usuario: <%= user.email %></h3>
+    <p>
+        Id. de la BD: <%= user.id %>
+    </p>
+    <p>
+        Contraseña Cifrada: <%= user.password %>
+    </p>
+</div>
