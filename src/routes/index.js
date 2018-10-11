@@ -17,15 +17,37 @@ router.post('/signup', passport.authenticate('local-signup', {
 }));
 
 router.get('/signin', (req, res, next) => {
-    
+    res.render('signin');
 });
 
-router.post('/signin', (req, res, next) => {
-    
+router.post('/signin', passport.authenticate('local-signin', {
+    successRedirect: '/profile',
+    failureRedirect: '/signin',
+    passReqToCallback: true
+}));
+
+router.get('/logout', (req, res, next) => {
+    req.logout();
+    res.redirect('/');
 });
 
-router.get('/profile', (req, res, next) => {
+//Control de Acceso a paginas
+
+router.use((req, res, next) => {
+    isAuthenticated(req, res, next);
+    next();
+});
+
+router.get('/profile',(req, res, next) => {
     res.render('profile');
 });
+
+//Restriccion de Acceso al Perfil
+function isAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+};
 
 module.exports = router;

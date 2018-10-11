@@ -1,51 +1,54 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
-const user = require('../models/user');
+const User = require ('../models/user');
 
-passport.serializeUser((User, done) => {
-    done(null, User.id);
+// Guardado de Datos de Sesion
+passport.serializeUser((user, done) => {
+    done(null, user.id);
 });
 
-passport.deserializeUser(async(id, done) => {
-    const User = await user.findById(id);
-    done(null, User);
+passport.deserializeUser( async (id, done) => {
+    const user = await User.findById(id);
+    done(null, user);
 });
 
-// Registro del Usuario
-passport.use('local-signup', new LocalStrategy( {
+//Registro de Usuario
+
+passport.use('local-signup', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true
 }, async (req, email, password, done) => {
 
-    //Validaciones
-    const Us = user.findOne({email: email})
-    if (Us) {
-        return done(null, false, req.flash('signupMessage', 'El Email ya ha sido tomado!!!'))
+    //Validando Registro
+    const user = await User.findOne({email: email});
+    if (user) {
+        return done(null, false, req.flash('signupMessage', 'El Email ya se encuentra registrado en el Sistema'));
     } else {
-        const newUser = new user();
+        const newUser = new User();
         newUser.email = email;
         newUser.password = newUser.encryptPassword(password);
         await newUser.save();
         done(null, newUser);
-    }    
+    }
+
 }));
 
-// Logueo del Usuario
-passport.use('local-signin', new LocalStrategy( {
+//Login de Usuario
+
+passport.use('local-signin', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
-    passReqToCallback: true
+    passReqToCallback: true 
 }, async (req, email, password, done) => {
 
-    //Comprobacion
-    const Use = await user.findOne({email: email});
-    if (!Use) {
-        return done(null, false, req.flash('signinMessage', 'Usuario no Encontrado!!!'));
+    const user = await User.findOne({email: email});
+    if (!user) {
+        return done(null, false, req.flash('signinMessage', 'Cuenta de Correo no registrada en el Sistema'));
     }
-    if (!Use.comparePassword(password)) {
+    if (!user.validatePassword(password)) {
         return done(null, false, req.flash('signinMessage', 'Contraseña Incorrecta!!!'));
     }
-    done(null, Use);
+    done(null, user);
 }));

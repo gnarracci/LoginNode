@@ -7,6 +7,20 @@
     <title>Login Node JS</title>
 </head>
 <body>
+
+    <% if(signupMessage) { %>
+
+        <div><%= signupMessage %></div>
+        
+    <% } %>
+
+    <% if(signinMessage) { %>
+
+        <div><%= signinMessage %></div>
+        
+    <% } %>
+
+    <%- body %>
     
 </body>
 </html>
