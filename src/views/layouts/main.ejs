@@ -18,11 +18,12 @@
                     <% if (user) { %>
                         <div class="navbar-nav ml-auto">
                                 <a class="nav-item nav-link active" href="/profile">Perfil de Usuario <span class="sr-only">(current)</span></a>
+                                <a class="nav-item nav-link active" href="#"><%= user.email %> <span class="sr-only">(current)</span></a>
                                 <a class="nav-item nav-link" href="/logout">Salir</a>
                         </div>
                     <% } else { %>
                         <div class="navbar-nav ml-auto">
-                                <a class="nav-item nav-link active" href="/signin">Login <span class="sr-only">(current)</span></a>
+                                <a class="nav-item nav-link active" href="/signin">Iniciar Sesión <span class="sr-only">(current)</span></a>
                                 <a class="nav-item nav-link" href="/signup">Registro</a>
                         </div>
                     <% } %>
